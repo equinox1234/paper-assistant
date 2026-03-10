@@ -1,7 +1,6 @@
-streamlit==1.32.0
+streamlit
+langchain
 langchain-classic
 langchain-openai
-langchain-community
-langchain-core
 pypdf
 faiss-cpu
