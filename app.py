@@ -69,7 +69,8 @@ if uploaded_file is not None and st.session_state.vectorstore is None:
                 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
                 splits = text_splitter.split_documents(docs)
                 
-                embeddings = OpenAIEmbeddings(api_key=api_key, base_url=base_url, model="BAAI/bge-m3")
+                # 增加 chunk_size=32，强制限制每次请求的最大批次，防止超过服务商的 64 上限
+embeddings = OpenAIEmbeddings(api_key=api_key, base_url=base_url, model="BAAI/bge-m3", chunk_size=32)
                 vectorstore = FAISS.from_documents(documents=splits, embedding=embeddings)
                 
                 st.session_state.vectorstore = vectorstore
@@ -129,3 +130,4 @@ if st.session_state.vectorstore is not None:
                     st.session_state.chat_history.append({"role": "assistant", "content": ai_answer})
                 except Exception as e:
                     st.error(f"出错了: {e}")
+
